@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/TheAncientOwl/lunardb-js/issues"
   },
-  "homepage": "https://github.com/TheAncientOwl/lunardb-js#readme"
+  "homepage": "https://github.com/TheAncientOwl/lunardb-js#readme",
+  "dependencies": {
+    "ws": "^8.17.0"
+  }
 }
