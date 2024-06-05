@@ -1,5 +1,3 @@
-const hello = (name) => {
-  console.log(`Hello ${name}!`);
-};
+const LunarDB = require('./LunarDB');
 
-module.exports = { hello };
+module.exports = { LunarDB };
