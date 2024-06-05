@@ -7,12 +7,12 @@ class LunarDB {
   #port = 8083;
   #socket = null;
   #connected = false;
-  #executingQuery = false;
   #callbacks = {
     open: new Set(),
     close: new Set(),
     error: new Set(),
   };
+  #queryResponseHandler = null;
 
   // <connection>
   constructor(ip, port) {
@@ -76,7 +76,9 @@ class LunarDB {
   }
 
   #handleSocketMessage(message) {
-    // Logger.verbose(`Received server message: "${message}"`);
+    if (this.#queryResponseHandler != null) {
+      this.#queryResponseHandler(message);
+    }
   }
 
   #handleSocketClose() {
@@ -99,53 +101,40 @@ class LunarDB {
     return this.#connected;
   }
 
-  addOnConnectionEstablished(cb) {
+  addOnConnectListener(cb) {
     this.#callbacks.open.add(cb);
   }
 
-  deleteOnConnectionEstablished(cb) {
+  removeOnConnectListener(cb) {
     this.#callbacks.open.delete(cb);
   }
 
-  addOnConnectionClosed(cb) {
-    this.#callbacks.close.add(cb);
-  }
-
-  addOnConnectionError(cb) {
-    this.#callbacks.error.add(cb);
-  }
   // </events>
 
   // <query>
   execQuery(query) {
     assert(typeof query === 'string', Logger.format('Query must be a string', LogLevel.Assert));
-    if (this.#executingQuery === false) {
-      Logger.verbose(`Executing query: "${query}"`);
+    Logger.verbose(`Executing query: "${query}"`);
 
-      this.#executingQuery = true;
-      this.connect();
-      this.#socket.send(query);
-    } else {
-      assert(false, 'Cannot execute more than one query at a time');
-    }
+    this.connect();
+    this.#socket.send(query);
 
     return this;
   }
 
   afterQueryExec(cb) {
     this.connect();
-    this.#socket.on('message', buffer => {
-      cb(buffer.toString());
-      this.resetQueryCallback();
-      this.#executingQuery = false;
-    });
+    this.#queryResponseHandler = message => {
+      this.#queryResponseHandler = null;
+      cb(message);
+    };
 
     return this;
   }
 
-  resetQueryCallback() {
+  resetQueryResponseHandler() {
     this.connect();
-    this.#socket.on('message', buffer => this.#handleSocketMessage(buffer.toString()));
+    this.#queryResponseHandler = null;
   }
   // </query>
 }

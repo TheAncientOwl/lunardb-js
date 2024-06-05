@@ -31,6 +31,7 @@ class Logger {
         break;
       case LogLevel.Verbose:
         console.log(Logger.format(`${message}`, level));
+        break;
       default:
         console.log(Logger.format(`${message}`, level));
     }

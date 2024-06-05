@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "start": "node src/index.js",
-    "integration-mp": "node test/integration/message-passing.test.js"
+    "integration-mp": "node test/integration/message-passing.test.js",
+    "integration-scenario01": "node test/integration/scenario.01.test.js"
   },
   "repository": {
     "type": "git",
