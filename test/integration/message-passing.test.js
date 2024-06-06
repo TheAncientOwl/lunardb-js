@@ -7,7 +7,7 @@ const test = () => {
   ldb.connect();
 
   const sendCb = () => {
-    ldb.execQuery('Hello from LunarDB-JS!').afterQueryExec(result => {
+    ldb.query('Hello from LunarDB-JS!').afterQueryExec(result => {
       Logger.info(`Received query result: ${result}`);
     });
 

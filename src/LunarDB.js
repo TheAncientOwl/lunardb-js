@@ -67,9 +67,9 @@ class LunarDB {
   // </connection>
 
   // <query>
-  execQuery(query) {
-    assert(typeof query === 'string', Logger.format('Query must be a string', LogLevel.Assert));
-    Logger.verbose(`Executing query: "${query}"`);
+  query(queryStr) {
+    assert(typeof queryStr === 'string', Logger.format('Query must be a string', LogLevel.Assert));
+    Logger.verbose(`Executing query: "${queryStr}"`);
 
     this.connect();
 
@@ -79,7 +79,7 @@ class LunarDB {
         resolve(message);
       };
 
-      this.#socket.send(query);
+      this.#socket.send(queryStr);
     });
   }
   // </query>

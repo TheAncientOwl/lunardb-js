@@ -9,31 +9,31 @@ const test = () => {
 
   const scenarioCallback = () => {
     ldb
-      .execQuery('database drop DummyDB;')
+      .query('database drop DummyDB;')
       .then(result => {
         Logger.info(`[RESPONSE] Step 0. ${result}`);
 
-        return ldb.execQuery('database create DummyDB;');
+        return ldb.query('database create DummyDB;');
       })
       .then(result => {
         Logger.info(`[RESPONSE] Step 1. ${result}`);
 
-        return ldb.execQuery('database use DummyDB;');
+        return ldb.query('database use DummyDB;');
       })
       .then(result => {
         Logger.info(`[RESPONSE] Step 2. ${result}`);
 
-        return ldb.execQuery('schema Employee { name: String; salary: float; };');
+        return ldb.query('schema Employee { name: String; salary: float; };');
       })
       .then(result => {
         Logger.info(`[RESPONSE] Step 3. ${result}`);
 
-        return ldb.execQuery('create collection Employees based on Employee;');
+        return ldb.query('create collection Employees based on Employee;');
       })
       .then(result => {
         Logger.info(`[RESPONSE] Step 4. ${result}`);
 
-        return ldb.execQuery(
+        return ldb.query(
           'insert into Employees objects [ {"name":"Bob","salary":"4000"}{"name":"George","salary":"4500"} ];'
         );
       })
