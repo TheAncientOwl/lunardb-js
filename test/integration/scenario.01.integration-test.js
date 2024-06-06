@@ -34,11 +34,18 @@ const integrationTest = () => {
         Logger.info(`[RESPONSE] Step 4. ${result}`);
 
         return ldb.query(
-          'insert into Employees objects [ {"name":"Bob","salary":"4000"}{"name":"George","salary":"4500"} ];'
+          'insert into Employees objects [ {"name":"Bob","salary":"4000"}{"name":"George","salary":"4500"}{"name":"Akshan","salary":"1000000"} ];'
         );
       })
       .then(result => {
         Logger.info(`[RESPONSE] Step 5. ${result}`);
+
+        return ldb.query(`select from structure Employees where ( 1 == 1 ) fields [ name, salary ];`);
+      })
+      .then(result => {
+        Logger.info(`[RESPONSE] Step 6. ${result}`);
+        const { selection } = JSON.parse(result);
+        Logger.info(`[RESPONSE] Step 6. Received ${selection.length} objects`);
 
         ldb.removeOnConnectListener(scenarioCallback);
         ldb.disconnect();

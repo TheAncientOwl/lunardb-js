@@ -24,7 +24,6 @@ class Insert {
     assertNotEmpty(this.#into, 'Insert structure name');
 
     return `insert into ${this.#into} objects [ ${this.#objects.join(' ')} ];`;
-    return `ok`;
   }
 }
 

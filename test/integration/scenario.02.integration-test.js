@@ -1,5 +1,5 @@
 const { LunarDB, QueryBuilders } = require('../../src/index');
-const { Database, Schema, Create, Insert } = QueryBuilders;
+const { Database, Schema, Create, Insert, Select } = QueryBuilders;
 const { Logger, LogLevel } = require('../../src/Logger');
 const executeAfterSeconds = require('./executeAfterSeconds');
 
@@ -9,8 +9,8 @@ const integrationTest = () => {
   ldb.connect();
 
   const databaseName = 'DummyDB';
-  const schemaName = 'SomeSchema';
-  const collectionName = 'SomeCollection';
+  const schemaName = 'Employee';
+  const collectionName = 'Employees';
 
   const scenarioCallback = () => {
     ldb
@@ -53,6 +53,13 @@ const integrationTest = () => {
       })
       .then(result => {
         Logger.info(`[RESPONSE] Step 5. ${result}`);
+
+        return ldb.query(new Select().from(collectionName).addField('salary').addField('name').where('1 == 1'));
+      })
+      .then(result => {
+        Logger.info(`[RESPONSE] Step 6. ${result}`);
+        const { selection } = JSON.parse(result);
+        Logger.info(`[RESPONSE] Step 6. Received ${selection.length} objects`);
 
         ldb.removeOnConnectListener(scenarioCallback);
         ldb.disconnect();
