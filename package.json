@@ -1,6 +1,6 @@
 {
   "name": "lunardb-js",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "LunarDB JavaScript API",
   "main": "src/index.js",
   "scripts": {
@@ -8,7 +8,8 @@
     "integration-connection": "node test/connection/dummy_client.js",
     "integration-mp": "node test/integration/message-passing.integration-test.js",
     "integration-scenario01": "node test/integration/scenario.01.integration-test.js",
-    "integration-scenario02": "node test/integration/scenario.02.integration-test.js"
+    "integration-scenario02": "node test/integration/scenario.02.integration-test.js",
+    "integration-arrays": "node test/integration/array.integration-test.js"
   },
   "repository": {
     "type": "git",

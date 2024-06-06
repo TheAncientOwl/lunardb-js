@@ -13,7 +13,7 @@ class Insert {
   addObject(object) {
     this.#objects.push(
       JSON.stringify(object, (key, value) => {
-        return key === '' ? value : String(value);
+        return key === '' ? value : JSON.stringify(value);
       })
     );
     return this;
