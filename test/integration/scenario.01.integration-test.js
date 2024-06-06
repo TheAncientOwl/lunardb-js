@@ -47,6 +47,18 @@ const integrationTest = () => {
         const { selection } = JSON.parse(result);
         Logger.info(`[RESPONSE] Step 6. Received ${selection.length} objects`);
 
+        return ldb.query('update structure Employees where ( name == Akshan ) modify [ salary => 2000000 ];');
+      })
+      .then(result => {
+        Logger.info(`[RESPONSE] Step 7. ${result}`);
+
+        return ldb.query(`select from structure Employees where ( 1 == 1 ) fields [ name, salary ];`);
+      })
+      .then(result => {
+        Logger.info(`[RESPONSE] Step 8. ${result}`);
+        const { selection } = JSON.parse(result);
+        Logger.info(`[RESPONSE] Step 8. Received ${selection.length} objects`);
+
         ldb.removeOnConnectListener(scenarioCallback);
         ldb.disconnect();
       })

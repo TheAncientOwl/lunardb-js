@@ -1,5 +1,9 @@
 const { assert, assertNotEmpty } = require('../assert');
 
+const removeEscapedQuotes = jsonString => {
+  return jsonString.replace(/\\"/g, '');
+};
+
 class Insert {
   #into = '';
   #objects = [];
@@ -12,9 +16,11 @@ class Insert {
 
   addObject(object) {
     this.#objects.push(
-      JSON.stringify(object, (key, value) => {
-        return key === '' ? value : JSON.stringify(value);
-      })
+      removeEscapedQuotes(
+        JSON.stringify(object, (key, value) => {
+          return key === '' ? value : removeEscapedQuotes(JSON.stringify(value));
+        })
+      )
     );
     return this;
   }
