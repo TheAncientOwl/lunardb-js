@@ -7,10 +7,10 @@ class LunarDB {
   #port = 8083;
   #socket = null;
   #connected = false;
-  #callbacks = {
-    open: new Set(),
-    close: new Set(),
-    error: new Set(),
+  #connectionCallbacks = {
+    onConnect: new Set(),
+    onClose: new Set(),
+    onError: new Set(),
   };
   #queryResponseHandler = null;
 
@@ -33,6 +33,10 @@ class LunarDB {
     this.#port = port;
   }
 
+  #getAddress() {
+    return `ws://${this.#ip}:${this.#port}`;
+  }
+
   connect() {
     if (this.#socket == null) {
       const address = this.#getAddress();
@@ -47,13 +51,6 @@ class LunarDB {
     }
   }
 
-  disconnect() {
-    Logger.info(`Disconnecting`);
-    this.#socket.close();
-    this.#socket = null;
-    this.#connected = false;
-  }
-
   connectOverride(is, port) {
     this.#setAddress(is, port);
     this.#socket.close();
@@ -61,16 +58,47 @@ class LunarDB {
     this.connect();
   }
 
-  #getAddress() {
-    return `ws://${this.#ip}:${this.#port}`;
+  disconnect() {
+    Logger.info(`Disconnecting`);
+    this.#socket.close();
+    this.#socket = null;
+    this.#connected = false;
   }
   // </connection>
 
-  // <handlers>
+  // <query>
+  execQuery(query) {
+    assert(typeof query === 'string', Logger.format('Query must be a string', LogLevel.Assert));
+    Logger.verbose(`Executing query: "${query}"`);
+
+    this.connect();
+
+    return new Promise((resolve, reject) => {
+      this.#queryResponseHandler = message => {
+        this.resetQueryResponseHandler = null;
+        resolve(message);
+      };
+
+      this.#socket.send(query);
+    });
+  }
+  // </query>
+
+  // <events>
+  addOnConnectListener(cb) {
+    this.#connectionCallbacks.onConnect.add(cb);
+  }
+
+  removeOnConnectListener(cb) {
+    this.#connectionCallbacks.onConnect.delete(cb);
+  }
+  // </events>
+
+  // <socket-handlers>
   #handleSocketOpen() {
     Logger.verbose(`Connected to ${this.#getAddress()}`);
     this.#connected = true;
-    for (const callback of this.#callbacks.open) {
+    for (const callback of this.#connectionCallbacks.onConnect) {
       callback();
     }
   }
@@ -82,61 +110,19 @@ class LunarDB {
   }
 
   #handleSocketClose() {
-    for (const callback of this.#callbacks.close) {
+    Logger.info(`Connection closed`);
+    for (const callback of this.#connectionCallbacks.onClose) {
       callback();
     }
-    Logger.info(`Connection closed`);
   }
 
   #handleSocketError(err) {
-    for (const callback of this.#callbacks.error) {
+    Logger.error(err);
+    for (const callback of this.#connectionCallbacks.onError) {
       callback();
     }
-    Logger.error(err);
   }
-  // </handlers>
-
-  // <events>
-  connectionEstablished() {
-    return this.#connected;
-  }
-
-  addOnConnectListener(cb) {
-    this.#callbacks.open.add(cb);
-  }
-
-  removeOnConnectListener(cb) {
-    this.#callbacks.open.delete(cb);
-  }
-
-  // </events>
-
-  // <query>
-  execQuery(query) {
-    assert(typeof query === 'string', Logger.format('Query must be a string', LogLevel.Assert));
-    Logger.verbose(`Executing query: "${query}"`);
-
-    this.connect();
-    this.#socket.send(query);
-
-    return this;
-  }
-
-  afterQueryExec(cb) {
-    this.connect();
-    this.#queryResponseHandler = message => {
-      this.#queryResponseHandler = null;
-      cb(message);
-    };
-
-    return this;
-  }
-
-  resetQueryResponseHandler() {
-    this.connect();
-    this.#queryResponseHandler = null;
-  }
-  // </query>
+  // </socket-handlers>
 }
 
 module.exports = LunarDB;

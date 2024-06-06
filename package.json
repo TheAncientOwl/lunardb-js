@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "jest",
-    "start": "node src/index.js",
+    "integration-connection": "node test/connection/dummy_client.js",
     "integration-mp": "node test/integration/message-passing.test.js",
     "integration-scenario01": "node test/integration/scenario.01.test.js"
   },

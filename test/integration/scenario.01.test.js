@@ -8,34 +8,44 @@ const test = () => {
   ldb.connect();
 
   const scenarioCallback = () => {
-    ldb.execQuery('database drop DummyDB;').afterQueryExec(result => {
-      Logger.info(`[RESPONSE] Step 0. ${result}`);
-      ldb.execQuery('database create DummyDB;').afterQueryExec(result => {
+    ldb
+      .execQuery('database drop DummyDB;')
+      .then(result => {
+        Logger.info(`[RESPONSE] Step 0. ${result}`);
+
+        return ldb.execQuery('database create DummyDB;');
+      })
+      .then(result => {
         Logger.info(`[RESPONSE] Step 1. ${result}`);
 
-        ldb.execQuery('database use DummyDB;').afterQueryExec(result => {
-          Logger.info(`[RESPONSE] Step 2. ${result}`);
+        return ldb.execQuery('database use DummyDB;');
+      })
+      .then(result => {
+        Logger.info(`[RESPONSE] Step 2. ${result}`);
 
-          ldb.execQuery('schema Employee { name: String; salary: float; };').afterQueryExec(result => {
-            Logger.info(`[RESPONSE] Step 3. ${result}`);
+        return ldb.execQuery('schema Employee { name: String; salary: float; };');
+      })
+      .then(result => {
+        Logger.info(`[RESPONSE] Step 3. ${result}`);
 
-            ldb.execQuery('create collection Employees based on Employee;').afterQueryExec(result => {
-              Logger.info(`[RESPONSE] Step 4. ${result}`);
+        return ldb.execQuery('create collection Employees based on Employee;');
+      })
+      .then(result => {
+        Logger.info(`[RESPONSE] Step 4. ${result}`);
 
-              ldb
-                .execQuery(
-                  'insert into Employees objects [ {"name":"Bob","salary":"4000"}{"name":"George","salary":"4500"} ];'
-                )
-                .afterQueryExec(result => {
-                  Logger.info(`[RESPONSE] Step 5. ${result}`);
-                  ldb.removeOnConnectListener(scenarioCallback);
-                  ldb.disconnect();
-                });
-            });
-          });
-        });
+        return ldb.execQuery(
+          'insert into Employees objects [ {"name":"Bob","salary":"4000"}{"name":"George","salary":"4500"} ];'
+        );
+      })
+      .then(result => {
+        Logger.info(`[RESPONSE] Step 5. ${result}`);
+
+        ldb.removeOnConnectListener(scenarioCallback);
+        ldb.disconnect();
+      })
+      .catch(err => {
+        Logger.error(`Server error: ${err}`);
       });
-    });
 
     ldb.removeOnConnectListener(scenarioCallback);
   };
