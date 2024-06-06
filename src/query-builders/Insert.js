@@ -27,13 +27,13 @@ class Insert {
   }
 }
 
-console.log(
-  new Insert()
-    .into('SomeCollection')
-    .addObject({ name: 'Bob', salary: 4000 })
-    .addObject({ name: 'George', salary: 4500 })
-    .addObject({ name: 'Akshan', salary: 1000000 })
-    .build()
-);
+// console.log(
+//   new Insert()
+//     .into('SomeCollection')
+//     .addObject({ name: 'Bob', salary: 4000 })
+//     .addObject({ name: 'George', salary: 4500 })
+//     .addObject({ name: 'Akshan', salary: 1000000 })
+//     .build()
+// );
 
 module.exports = Insert;

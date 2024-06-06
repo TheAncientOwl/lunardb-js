@@ -36,7 +36,7 @@ class Create {
   }
 }
 
-console.log(new Create().name('SomeCollection').schema('SomeSchema').isDocument().build());
-console.log(new Create().name('SomeCollection').schema('SomeSchema').isTable().build());
+// console.log(new Create().name('SomeCollection').schema('SomeSchema').isDocument().build());
+// console.log(new Create().name('SomeCollection').schema('SomeSchema').isTable().build());
 
 module.exports = Create;

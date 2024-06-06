@@ -40,9 +40,9 @@ class Database {
   }
 }
 
-console.log(new Database().name('SomeDatabase').isCreate().build());
-console.log(new Database().name('SomeDatabase').isUse().build());
-console.log(new Database().name('SomeDatabase').isDrop().build());
-console.log(new Database().name('SomeDatabase').isBackup('somepath').build());
+// console.log(new Database().name('SomeDatabase').isCreate().build());
+// console.log(new Database().name('SomeDatabase').isUse().build());
+// console.log(new Database().name('SomeDatabase').isDrop().build());
+// console.log(new Database().name('SomeDatabase').isBackup('somepath').build());
 
 module.exports = Database;

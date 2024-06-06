@@ -28,14 +28,14 @@ class Schema {
   }
 }
 
-console.log(
-  new Schema()
-    .name('SomeSchema')
-    .addField({ name: 'field1', type: 'string' })
-    .addField({ name: 'field2', type: 'string' })
-    .addField({ name: 'field3', type: 'string' })
-    .addField({ name: 'field4', type: 'string' })
-    .build()
-);
+// console.log(
+//   new Schema()
+//     .name('SomeSchema')
+//     .addField({ name: 'field1', type: 'string' })
+//     .addField({ name: 'field2', type: 'string' })
+//     .addField({ name: 'field3', type: 'string' })
+//     .addField({ name: 'field4', type: 'string' })
+//     .build()
+// );
 
 module.exports = Schema;

@@ -32,6 +32,6 @@ class Select {
   }
 }
 
-console.log(new Select().from('SomeCollection').addField('salary').addField('name').where('1 == 1').build());
+// console.log(new Select().from('SomeCollection').addField('salary').addField('name').where('1 == 1').build());
 
 module.exports = Select;
