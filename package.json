@@ -6,8 +6,9 @@
   "scripts": {
     "test": "jest",
     "integration-connection": "node test/connection/dummy_client.js",
-    "integration-mp": "node test/integration/message-passing.test.js",
-    "integration-scenario01": "node test/integration/scenario.01.test.js"
+    "integration-mp": "node test/integration/message-passing.integration-test.js",
+    "integration-scenario01": "node test/integration/scenario.01.integration-test.js",
+    "integration-scenario02": "node test/integration/scenario.02.integration-test.js"
   },
   "repository": {
     "type": "git",

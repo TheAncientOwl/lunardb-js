@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 const { Logger, LogLevel } = require('./Logger');
-const assert = require('assert');
+const { assert } = require('./assert');
 
 class LunarDB {
   #ip = '127.0.0.1';
@@ -67,8 +67,17 @@ class LunarDB {
   // </connection>
 
   // <query>
-  query(queryStr) {
-    assert(typeof queryStr === 'string', Logger.format('Query must be a string', LogLevel.Assert));
+  query(queryObject) {
+    assert(
+      typeof queryObject === 'string' ||
+        (typeof queryObject === 'object' &&
+          typeof queryObject.build === 'function' &&
+          typeof queryObject.build() === 'string'),
+      Logger.format('Query must be a string or at least build into a string', LogLevel.Assert)
+    );
+
+    const queryStr = typeof queryObject === 'string' ? queryObject : queryObject.build();
+
     Logger.verbose(`Executing query: "${queryStr}"`);
 
     this.connect();
@@ -125,4 +134,4 @@ class LunarDB {
   // </socket-handlers>
 }
 
-module.exports = LunarDB;
+module.exports = { LunarDB };

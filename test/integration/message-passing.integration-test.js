@@ -1,8 +1,8 @@
-const LunarDB = require('../../src/LunarDB');
+const { LunarDB } = require('../../src/LunarDB');
 const { Logger, LogLevel } = require('../../src/Logger');
 const executeAfterSeconds = require('./executeAfterSeconds');
 
-const test = () => {
+const integrationTest = () => {
   const ldb = new LunarDB('127.0.0.1', 8083);
   ldb.connect();
 
@@ -21,4 +21,4 @@ const test = () => {
   });
 };
 
-test();
+integrationTest();

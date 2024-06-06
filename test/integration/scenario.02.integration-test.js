@@ -1,40 +1,54 @@
-const LunarDB = require('../../src/LunarDB');
+const { LunarDB, QueryBuilders } = require('../../src/index');
+const { Database, Schema, Create, Insert } = QueryBuilders;
 const { Logger, LogLevel } = require('../../src/Logger');
 const executeAfterSeconds = require('./executeAfterSeconds');
 
-const test = () => {
+const integrationTest = () => {
   const ldb = new LunarDB('127.0.0.1', 8083);
 
   ldb.connect();
 
+  const databaseName = 'DummyDB';
+  const schemaName = 'SomeSchema';
+  const collectionName = 'SomeCollection';
+
   const scenarioCallback = () => {
     ldb
-      .query('database drop DummyDB;')
+      .query(new Database().name(databaseName).isDrop())
       .then(result => {
         Logger.info(`[RESPONSE] Step 0. ${result}`);
 
-        return ldb.query('database create DummyDB;');
+        return ldb.query(new Database().name(databaseName).isCreate());
       })
       .then(result => {
         Logger.info(`[RESPONSE] Step 1. ${result}`);
 
-        return ldb.query('database use DummyDB;');
+        return ldb.query(new Database().name(databaseName).isUse());
       })
       .then(result => {
         Logger.info(`[RESPONSE] Step 2. ${result}`);
 
-        return ldb.query('schema Employee { name: String; salary: float; };');
+        return ldb.query(
+          new Schema()
+            .name(schemaName)
+            .addField({ name: 'name', type: 'string' })
+            .addField({ name: 'salary', type: 'float' })
+        );
       })
       .then(result => {
         Logger.info(`[RESPONSE] Step 3. ${result}`);
 
-        return ldb.query('create collection Employees based on Employee;');
+        return ldb.query(new Create().name(collectionName).schema(schemaName).isDocument());
       })
       .then(result => {
         Logger.info(`[RESPONSE] Step 4. ${result}`);
 
         return ldb.query(
-          'insert into Employees objects [ {"name":"Bob","salary":"4000"}{"name":"George","salary":"4500"} ];'
+          new Insert()
+            .into(collectionName)
+            .addObject({ name: 'Bob', salary: 4000 })
+            .addObject({ name: 'George', salary: 4500 })
+            .addObject({ name: 'Akshan', salary: 1000000 })
         );
       })
       .then(result => {
@@ -53,4 +67,4 @@ const test = () => {
   ldb.addOnConnectListener(scenarioCallback);
 };
 
-test();
+integrationTest();
