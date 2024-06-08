@@ -1,4 +1,4 @@
-const { assert, assertNotEmpty } = require('../assert');
+import { assert, assertNotEmpty } from '../assert.js';
 
 class Database {
   #type = '';
@@ -45,4 +45,4 @@ class Database {
 // console.log(new Database().name('SomeDatabase').isDrop().build());
 // console.log(new Database().name('SomeDatabase').isBackup('somepath').build());
 
-module.exports = Database;
+export default Database;

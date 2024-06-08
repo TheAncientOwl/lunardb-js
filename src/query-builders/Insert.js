@@ -1,4 +1,4 @@
-const { assert, assertNotEmpty } = require('../assert');
+import { assert, assertNotEmpty } from '../assert.js';
 
 const removeEscapedQuotes = jsonString => {
   return jsonString.replace(/\\"/g, '');
@@ -42,4 +42,4 @@ class Insert {
 //     .build()
 // );
 
-module.exports = Insert;
+export default Insert;

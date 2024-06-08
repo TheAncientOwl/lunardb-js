@@ -1,7 +1,7 @@
-const { LunarDB, QueryBuilders } = require('../../src/index');
+import { LunarDB, QueryBuilders } from '../../src/index.js';
+import { Logger } from '../../src/Logger.js';
+
 const { Database, Schema, Create, Insert, Select, Update } = QueryBuilders;
-const { Logger, LogLevel } = require('../../src/Logger');
-const executeAfterSeconds = require('./executeAfterSeconds');
 
 const integrationTest = () => {
   const ldb = new LunarDB('127.0.0.1', 8083);

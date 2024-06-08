@@ -1,4 +1,4 @@
-const WebSocket = require('ws');
+import { WebSocket } from 'ws';
 
 const socket = new WebSocket('ws://localhost:8083');
 
@@ -10,7 +10,7 @@ socket.on('open', () => {
   socket.send(message);
 });
 
-socket.on('message', (data) => {
+socket.on('message', data => {
   console.log('Received:', data.toString());
 });
 
@@ -18,6 +18,6 @@ socket.on('close', () => {
   console.log('Disconnected from the WebSocket server');
 });
 
-socket.on('error', (err) => {
+socket.on('error', err => {
   console.error('WebSocket error:', err);
 });

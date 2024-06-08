@@ -1,4 +1,4 @@
-const { assert, assertNotEmpty } = require('../assert');
+import { assert, assertNotEmpty } from '../assert.js';
 
 class Schema {
   #fields = [];
@@ -38,4 +38,4 @@ class Schema {
 //     .build()
 // );
 
-module.exports = Schema;
+export default Schema;

@@ -1,16 +1,10 @@
 {
   "name": "lunardb-js",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "LunarDB JavaScript API",
   "main": "src/index.js",
-  "scripts": {
-    "test": "jest",
-    "integration-connection": "node test/connection/dummy_client.js",
-    "integration-mp": "node test/integration/message-passing.integration-test.js",
-    "integration-scenario01": "node test/integration/scenario.01.integration-test.js",
-    "integration-scenario02": "node test/integration/scenario.02.integration-test.js",
-    "integration-arrays": "node test/integration/array.integration-test.js"
-  },
+  "type": "module",
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TheAncientOwl/lunardb-js.git"

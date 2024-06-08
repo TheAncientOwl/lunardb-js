@@ -1,4 +1,4 @@
-const { assert, assertNotEmpty } = require('../assert');
+import { assert, assertNotEmpty } from '../assert.js';
 
 class Select {
   #from = '';
@@ -34,4 +34,4 @@ class Select {
 
 // console.log(new Select().from('SomeCollection').addField('salary').addField('name').where('1 == 1').build());
 
-module.exports = Select;
+export default Select;

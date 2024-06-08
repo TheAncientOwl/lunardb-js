@@ -1,6 +1,6 @@
-const WebSocket = require('ws');
-const { Logger, LogLevel } = require('./Logger');
-const { assert } = require('./assert');
+import { WebSocket } from 'ws';
+import { Logger, LogLevel } from './Logger.js';
+import { assert } from './assert.js';
 
 class LunarDB {
   #ip = '127.0.0.1';
@@ -134,4 +134,4 @@ class LunarDB {
   // </socket-handlers>
 }
 
-module.exports = { LunarDB };
+export default LunarDB;

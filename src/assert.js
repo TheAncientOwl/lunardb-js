@@ -1,4 +1,4 @@
-const { Logger, LogLevel } = require('./Logger');
+import { Logger, LogLevel } from './Logger.js';
 
 const assert = (condition, message) => {
   console.assert(condition, message);
@@ -14,4 +14,4 @@ const assertNotEmpty = (value, label) => {
   );
 };
 
-module.exports = { assert, assertNotEmpty };
+export { assert, assertNotEmpty };

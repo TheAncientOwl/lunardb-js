@@ -1,4 +1,4 @@
-const { LunarDB } = require('./LunarDB');
-const { QueryBuilders } = require('./query-builders/index');
+import LunarDB from './LunarDB.js';
+import QueryBuilders from './QueryBuilders.js';
 
-module.exports = { LunarDB, QueryBuilders };
+export { LunarDB, QueryBuilders };

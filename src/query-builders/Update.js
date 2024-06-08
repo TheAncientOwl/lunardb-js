@@ -1,4 +1,4 @@
-const { assert, assertNotEmpty } = require('../assert');
+import { assert, assertNotEmpty } from '../assert.js';
 
 class Update {
   #collection = '';
@@ -40,4 +40,4 @@ class Update {
 //     .build()
 // );
 
-module.exports = Update;
+export default Update;
