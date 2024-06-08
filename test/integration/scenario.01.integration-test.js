@@ -1,71 +1,40 @@
 import { Logger } from '../../src/Logger.js';
-import LunarDB from '../../src/LunarDB.js';
+import { LunarDB } from '../../src/index.js';
 
 const integrationTest = () => {
   const ldb = new LunarDB('127.0.0.1', 8083);
 
   ldb.connect();
 
-  const scenarioCallback = () => {
-    ldb
-      .query('database drop DummyDB;')
-      .then(result => {
-        Logger.info(`[RESPONSE] Step 0. ${result}`);
+  const databaseName = 'Scenario01_DB';
+  const schemaName = 'Scenario01_Schema';
+  const collectionName = 'Scenario01_Collection';
 
-        return ldb.query('database create DummyDB;');
-      })
-      .then(result => {
-        Logger.info(`[RESPONSE] Step 1. ${result}`);
+  const querries = [
+    `database drop ${databaseName};`,
+    `database create ${databaseName}`,
+    `database use ${databaseName};`,
+    `schema ${schemaName}  { name: String; salary: float; };`,
+    `create collection ${collectionName}  based on ${schemaName} ;`,
+    `insert into ${collectionName}  objects [ {"name":"Bob","salary":"4000"}{"name":"George","salary":"4500"}{"name":"Akshan","salary":"1000000"} ];`,
+    `select from structure ${collectionName}  where ( 1 == 1 ) fields [ name, salary ];`,
+    `update structure ${collectionName}  where ( name == Akshan ) modify [ salary => 2000000 ];`,
+    `select from structure ${collectionName}  where ( 1 == 1 ) fields [ name, salary ];`,
+  ];
 
-        return ldb.query('database use DummyDB;');
-      })
-      .then(result => {
-        Logger.info(`[RESPONSE] Step 2. ${result}`);
-
-        return ldb.query('schema Employee { name: String; salary: float; };');
-      })
-      .then(result => {
-        Logger.info(`[RESPONSE] Step 3. ${result}`);
-
-        return ldb.query('create collection Employees based on Employee;');
-      })
-      .then(result => {
-        Logger.info(`[RESPONSE] Step 4. ${result}`);
-
-        return ldb.query(
-          'insert into Employees objects [ {"name":"Bob","salary":"4000"}{"name":"George","salary":"4500"}{"name":"Akshan","salary":"1000000"} ];'
-        );
-      })
-      .then(result => {
-        Logger.info(`[RESPONSE] Step 5. ${result}`);
-
-        return ldb.query(`select from structure Employees where ( 1 == 1 ) fields [ name, salary ];`);
-      })
-      .then(result => {
-        Logger.info(`[RESPONSE] Step 6. ${result}`);
-        const { selection } = JSON.parse(result);
-        Logger.info(`[RESPONSE] Step 6. Received ${selection.length} objects`);
-
-        return ldb.query('update structure Employees where ( name == Akshan ) modify [ salary => 2000000 ];');
-      })
-      .then(result => {
-        Logger.info(`[RESPONSE] Step 7. ${result}`);
-
-        return ldb.query(`select from structure Employees where ( 1 == 1 ) fields [ name, salary ];`);
-      })
-      .then(result => {
-        Logger.info(`[RESPONSE] Step 8. ${result}`);
-        const { selection } = JSON.parse(result);
-        Logger.info(`[RESPONSE] Step 8. Received ${selection.length} objects`);
-
-        ldb.removeOnConnectListener(scenarioCallback);
-        ldb.disconnect();
-      })
-      .catch(err => {
-        Logger.error(`Server error: ${err}`);
-      });
-
+  const scenarioCallback = async () => {
     ldb.removeOnConnectListener(scenarioCallback);
+
+    try {
+      for (const query of querries) {
+        const result = await ldb.query(query);
+        Logger.info(`[Response] ${result}`);
+      }
+    } catch (err) {
+      Logger.error('err');
+    }
+
+    ldb.disconnect();
   };
 
   ldb.addOnConnectListener(scenarioCallback);

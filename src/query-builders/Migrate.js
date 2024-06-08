@@ -18,8 +18,8 @@ class Migrate {
   }
 
   using(using_) {
-    assert(typeof using_ === 'object' && 'old' in using_ && 'new' in using_, 'Invalid using');
-    this.#using.push(`${using_.old} => ${using_.new}`);
+    assert(typeof using_ === 'object' && 'actual' in using_ && 'new' in using_, 'Invalid using');
+    this.#using.push(`${using_.actual} => ${using_.new}`);
     return this;
   }
 

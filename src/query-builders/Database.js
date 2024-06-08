@@ -36,7 +36,7 @@ class Database {
   build() {
     assertNotEmpty(this.#type, 'Missing database query type');
     assertNotEmpty(this.#name, 'Missing name');
-    return `database ${this.#type} ${this.#name} ${this.#disk};`;
+    return `database ${this.#type} ${this.#name}${this.#disk.length !== 0 ? ` to disk "${this.#disk}"` : ''};`;
   }
 }
 

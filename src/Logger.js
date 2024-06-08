@@ -1,3 +1,6 @@
+import { Chalk } from 'chalk';
+const chalk = new Chalk();
+
 const LogLevel = {
   Info: 'Info',
   Assert: 'Assert',
@@ -21,19 +24,19 @@ class Logger {
   static log(message, level = LogLevel.Info) {
     switch (level) {
       case LogLevel.Info:
-        console.info(Logger.format(`${message}`, level));
+        console.info(chalk.cyan(Logger.format(`${message}`, level)));
         break;
       case LogLevel.Warn:
-        console.warn(Logger.format(`${message}`, level));
+        console.warn(chalk.yellow(Logger.format(`${message}`, level)));
         break;
       case LogLevel.Error:
-        console.error(Logger.format(`${message}`, level));
+        console.error(chalk.red(Logger.format(`${message}`, level)));
         break;
       case LogLevel.Verbose:
-        console.log(Logger.format(`${message}`, level));
+        console.log(chalk.green(Logger.format(`${message}`, level)));
         break;
       default:
-        console.log(Logger.format(`${message}`, level));
+        console.log(chalk.gray(Logger.format(`${message}`, level)));
     }
   }
 

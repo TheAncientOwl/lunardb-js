@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/TheAncientOwl/lunardb-js#readme",
   "dependencies": {
+    "chalk": "^5.3.0",
     "ws": "^8.17.0"
   },
   "devDependencies": {

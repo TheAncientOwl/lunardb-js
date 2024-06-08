@@ -18,7 +18,7 @@ class Rename {
   }
 
   isCollection() {
-    this.#type = 'collection';
+    this.#type = 'structure';
     return this;
   }
 
