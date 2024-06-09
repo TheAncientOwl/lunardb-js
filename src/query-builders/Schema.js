@@ -2,6 +2,7 @@ import { assert, assertNotEmpty } from '../assert.js';
 
 class Schema {
   #fields = [];
+  #inherits = [];
   #name = '';
 
   name(name_) {
@@ -10,21 +11,29 @@ class Schema {
     return this;
   }
 
-  addField(field) {
+  addField(field_) {
     assert(
-      typeof field === 'object' && 'name' in field && 'type' in field,
-      `Invalid field provided: ${field.toString()}`
+      typeof field_ === 'object' && 'name' in field_ && 'type' in field_,
+      `Invalid field provided: ${field_.toString()}`
     );
 
-    this.#fields.push(`${field.name}: ${field.type};`);
+    this.#fields.push(`${field_.name}: ${field_.type};`);
+    return this;
+  }
+
+  inherits(schemaName) {
+    assert(typeof schemaName === 'string' && schemaName.length !== 0, 'Invalid inherited schema name');
+    this.#inherits.push(schemaName);
     return this;
   }
 
   build() {
-    assert(this.#fields.length != 0, `No fields added`);
+    assert(this.#fields.length !== 0 || this.#inherits.length !== 0, `No fields or inherited schemas added added`);
     assertNotEmpty(this.#name, 'Schema name');
 
-    return `schema ${this.#name} { ${this.#fields.join(' ')} };`;
+    return `schema ${this.#name}${
+      this.#inherits.length !== 0 ? ` inherits ${this.#inherits[0]}` : ''
+    } { ${this.#fields.join(' ')} };`;
   }
 }
 

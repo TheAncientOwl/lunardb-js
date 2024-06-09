@@ -21,7 +21,7 @@ const formatTime = (date = new Date()) => {
 };
 
 class Logger {
-  static log(message, level = LogLevel.Info) {
+  static log(message, level = LogLevel.Log) {
     switch (level) {
       case LogLevel.Info:
         console.info(chalk.cyan(Logger.format(`${message}`, level)));
@@ -35,6 +35,7 @@ class Logger {
       case LogLevel.Verbose:
         console.log(chalk.green(Logger.format(`${message}`, level)));
         break;
+      case LogLevel.Log:
       default:
         console.log(chalk.gray(Logger.format(`${message}`, level)));
     }
