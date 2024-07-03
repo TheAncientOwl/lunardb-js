@@ -56,7 +56,7 @@ const integrationTest = () => {
       .into(collectionName)
       .addObject({ name: 'Bob', salary: 4000 })
       .addObject({ name: 'George', salary: 4500 })
-      .addObject({ name: 'Akshan', salary: 1000000 }),
+      .addObject({ name: 'Andrei', salary: 10000 }),
     new Select().from(collectionName).addField('salary').addField('name').where('1 == 1'),
     //</insert>
   ];
