@@ -1,6 +1,6 @@
 {
   "name": "lunardb-js",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "LunarDB JavaScript API",
   "main": "src/index.js",
   "type": "module",
